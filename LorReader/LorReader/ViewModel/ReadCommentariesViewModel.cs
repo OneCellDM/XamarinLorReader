@@ -38,14 +38,28 @@ namespace LorReader.ViewModel
 
         [Reactive]
         public CommentPage CommentPage { get; set; }
-        private int currentPage { get => CommentPage?.PageNumber ?? 0; }
+
+        [Reactive]
+        private int currentPage { get; set; } = 0;
         public string Uri { get; private set; }
         [Reactive]
         public List<PageModel> Pages { get; set; }
+        [Reactive]
+        public PageModel SelectedPage { get; set; }
 
         public ReadCommentariesViewModel(INavigation navigation) : base(navigation)
         {
-   
+            this.WhenAnyValue(x => x.SelectedPage).WhereNotNull().Subscribe(value =>
+            {
+                if (SelectedPage.IsSelected is false)
+                {
+                    if (SelectedPage.Number > 0)
+                    {
+                        currentPage = (SelectedPage.Number - 1);
+                        Load();
+                    }
+                }
+            });
             this.WhenAnyValue(x => x.CommentPage).WhereNotNull().Subscribe(value =>
             {
                 if (value.PageCount > 0)

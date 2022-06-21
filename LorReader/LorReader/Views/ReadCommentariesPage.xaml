@@ -15,7 +15,7 @@
             </Grid.RowDefinitions>
             
             <CollectionView HeightRequest="40"  Margin="10"  
-                           
+                            SelectedItem="{Binding SelectedPage}"
                             VerticalScrollBarVisibility="Never"
                             HorizontalOptions="CenterAndExpand"
                             Grid.Row="0"     
@@ -27,30 +27,28 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Button 
-                        HorizontalOptions="FillAndExpand" VerticalOptions="Center"  Text="{Binding Number}">
+                        <Frame BorderColor="{StaticResource LinkColor}" WidthRequest="40" HeightRequest="40" 
+                               BackgroundColor="Transparent" IsClippedToBounds="False"  Padding="0">
                             
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="WidthRequest" Value="40"/>
-                                    <Setter Property="HeightRequest" Value="40"/>
-                                    <Setter Property="BorderColor" Value="{StaticResource LinkColor}"/>
-                                    <Setter Property="TextColor" Value="{StaticResource LinkColor}" />
-                                   
-                                    <Setter Property="BorderWidth" Value="2"/>
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                   
-                                </Style>
-                            </Button.Style>
-                            <Button.Triggers>
-                                <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="True">
+                            <Label Text="{Binding Number}"  
+                                   TextColor="{StaticResource LinkColor}"
+                                   HorizontalOptions="Center"  VerticalOptions="Center">
+                           
+                         
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
                                     <Setter Property="TextColor" Value="White" />
-                                    <Setter Property="BorderColor" Value="White"/>
+                                   
 
-                                </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
+                                    </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding IsSelected}" Value="True">
+                                   <Setter Property="BorderColor" Value="White" />
+                             </DataTrigger>
+                        </Frame.Triggers>
+                       </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
