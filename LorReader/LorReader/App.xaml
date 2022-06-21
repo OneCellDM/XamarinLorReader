@@ -1,8 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LorReader.App">
     <Application.Resources>
-
+        <SolidColorBrush x:Key="ItemBG" Color="#272C2D"/>
+        <SolidColorBrush x:Key="MainBg" Color="#2E3436"/>
+        <Color x:Key="LinkColor" >#CC7833</Color>
     </Application.Resources>
 </Application>

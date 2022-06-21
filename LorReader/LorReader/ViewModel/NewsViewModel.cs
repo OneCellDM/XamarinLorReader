@@ -1,15 +1,11 @@
-﻿using LorParser.Models;
-
-using LorReader.Views;
-
-using ReactiveUI;
-
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
-
+using LorParser;
+using LorParser.Models;
+using LorReader.Views;
+using ReactiveUI;
 using Xamarin.Forms;
+
 
 namespace LorReader.ViewModel
 {
@@ -17,39 +13,46 @@ namespace LorReader.ViewModel
     {
         public IReactiveCommand OpenNewsCommand { get; set; }
         public IReactiveCommand OpenCommentaries { get; set; }
-        
-        public NewsViewModel (INavigation navigation) : base(navigation)
+
+        public NewsViewModel(INavigation navigation) : base(navigation)
         {
-            OpenCommentaries = ReactiveCommand.Create((string id) =>
+            OpenCommentaries = ReactiveCommand.Create((NewsPreview preview) =>
             {
-                navigation.PushAsync(new ReadCommentariesPage()
+                try
                 {
-                    BindingContext = new ReadCommentariesViewModel(navigation, id)
-                });
+                    navigation.PushAsync(new ReadCommentariesPage
+                    {
+                        Title = "Комментарии к записи:" + preview.Title,
+                        BindingContext = new ReadCommentariesViewModel(navigation, preview.NewsUri)
+                    }, true);
+                }
+                catch(Exception ex)
+                {
+                 
+                }
             });
 
-            OpenNewsCommand = ReactiveCommand.Create((string Url) =>
+            OpenNewsCommand = ReactiveCommand.Create((NewsPreview preview) =>
             {
-                navigation.PushAsync(new ReadNewPage()
+                navigation.PushAsync(new ReadNewPage
                 {
-                    BindingContext = new ReadNewsViewModel(navigation, Url)
+                    BindingContext = new ReadNewsViewModel(navigation, preview.NewsUri)
                 });
             });
 
             Load();
         }
 
+       
+
         public override void Load()
         {
             Task.Run(async () =>
             {
-                var res = await LorParser.LOR.GetNewsList();
+                var res = await LOR.GetNewsList();
                 foreach (var item in res.Items)
-                {
-                    App.Current.Dispatcher.BeginInvokeOnMainThread(() => Data.Add(item));
-                }
+                    Application.Current.Dispatcher.BeginInvokeOnMainThread(() => Data.Add(item));
             });
         }
-
     }
 }

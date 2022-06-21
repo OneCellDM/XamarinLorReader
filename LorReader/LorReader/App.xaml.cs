@@ -1,9 +1,5 @@
 ﻿using LorReader.Views;
-
-using System;
-
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace LorReader
 {
@@ -14,7 +10,6 @@ namespace LorReader
             InitializeComponent();
 
             MainPage = new NavigationPage(new NewsPage());
-           
         }
 
         protected override void OnStart()

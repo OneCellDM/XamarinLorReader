@@ -1,12 +1,121 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="LorReader.Views.ReadCommentariesPage">
+             xmlns:hl="clr-namespace:LabelHtml.Forms.Plugin.Abstractions;assembly=HtmlLabel.Forms.Plugin"
+             x:Class="LorReader.Views.ReadCommentariesPage" Background="{StaticResource MainBg}">
+    <ContentPage.Resources>
+        
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            
+            <CollectionView HeightRequest="40"  Margin="10"  
+                           
+                            VerticalScrollBarVisibility="Never"
+                            HorizontalOptions="CenterAndExpand"
+                            Grid.Row="0"     
+                            SelectionMode="Single"
+                    ItemsSource="{Binding Pages}">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" SnapPointsAlignment="Center"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Button 
+                        HorizontalOptions="FillAndExpand" VerticalOptions="Center"  Text="{Binding Number}">
+                            
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="WidthRequest" Value="40"/>
+                                    <Setter Property="HeightRequest" Value="40"/>
+                                    <Setter Property="BorderColor" Value="{StaticResource LinkColor}"/>
+                                    <Setter Property="TextColor" Value="{StaticResource LinkColor}" />
+                                   
+                                    <Setter Property="BorderWidth" Value="2"/>
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                   
+                                </Style>
+                            </Button.Style>
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="TextColor" Value="White" />
+                                    <Setter Property="BorderColor" Value="White"/>
+
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <CollectionView Grid.Row="1"  Margin="10,0,10,0"  VerticalScrollBarVisibility="Always"  SelectionMode="Single"
+                    ItemsSource="{Binding CommentPage.Items}">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"
+                               ItemSpacing="20"   />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="10" Background="{StaticResource ItemBG}">
+                            <Grid  Margin="-10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label x:Name="ReplyComment" Grid.Row="0" Grid.ColumnSpan="2"  TextColor="White" >
+                                <Label.Text>
+                                    <MultiBinding StringFormat="{}{0} ">
+                                        <Binding Path="ReplyOn.Name" />
+
+                                    </MultiBinding>
+                                </Label.Text>
+
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding ReplyOn}" Value="Null">
+                                        <Setter Property="IsVisible" Value="False"></Setter>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                                <StackLayout Grid.Row="1" Padding="0">
+                                    <Frame WidthRequest="80" Background="transparent" HeightRequest="80" CornerRadius="5" Padding="0" IsClippedToBounds="True">
+                                        <Image Source="{Binding UserPic}" Aspect="Fill" />
+                                    </Frame>
+                                </StackLayout>
+                                
+                            <StackLayout Grid.Row="1" Grid.Column="1"  Margin="5" >
+                               
+                        
+                            <hl:HtmlLabel 
+                                  
+                                  LinkColor="{StaticResource LinkColor}"
+                                  Text="{Binding Text}"
+                                  TextColor="White" />
+                                <Label  FontSize="14"  TextColor="{StaticResource LinkColor}" >
+                                    <Label.Text>
+                                        <MultiBinding StringFormat="{}Автор: {0} ({1})">
+                                            <Binding Path="Name" />
+                                            <Binding Path="Date"/>
+                                        </MultiBinding>
+                                    </Label.Text>
+                                </Label>
+                            </StackLayout>
+                        </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

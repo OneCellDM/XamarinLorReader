@@ -1,36 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>portable</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DebugType>portable</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ReactiveUI" Version="18.0.10" />
-    <PackageReference Include="ReactiveUI.Fody" Version="18.0.10" />
-    <PackageReference Include="Xam.Plugin.HtmlLabel" Version="5.0.0" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="ReactiveUI" Version="18.1.8" />
+        <PackageReference Include="ReactiveUI.Fody" Version="18.1.8" />
+        <PackageReference Include="ReactiveUI.XamForms" Version="18.1.8" />
+        <PackageReference Include="Xam.Plugin.HtmlLabel" Version="5.1.0" />
+        <PackageReference Include="Xamarin.Forms" Version="5.0.0.2478" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\LorParser\LorParser.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\LorParser\LorParser.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Views\NewsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\ReadCommentariesPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\ReadNewPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Views\NewsPage.xaml">
+            <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Views\ReadCommentariesPage.xaml">
+            <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Views\ReadNewPage.xaml">
+            <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
 </Project>

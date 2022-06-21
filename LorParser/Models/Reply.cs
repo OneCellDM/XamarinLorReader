@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LorParser.Models
+﻿namespace LorParser.Models
 {
     public class Reply
     {
