@@ -24,14 +24,14 @@ namespace LorReader.ViewModel
         }
         private async void Load(string url)
         {
-            int Errcount = 0;
+            int errcount = 0;
             Exception _ex = null;
             try
             {
                 News = await LorParser.LOR.GetNews(url);
 
             }
-            catch(Exception ex) {  _ex = ex; Errcount++; }
+            catch(Exception ex) {  _ex = ex; errcount++; }
             try
             {
                 ReadCommentariesView = new CommentariesView()
@@ -46,10 +46,10 @@ namespace LorReader.ViewModel
             catch (Exception ex) 
             {
                 if(_ex!=null) _ex = ex;
-                Errcount++;
+                errcount++;
                
             }
-            if (Errcount == 2)
+            if (errcount == 2)
             {
                await App.Current.MainPage.DisplayActionSheet("Error", _ex?.Message??"Неизвестная ошибка", "cancel");
                await Navigation.PopAsync();
