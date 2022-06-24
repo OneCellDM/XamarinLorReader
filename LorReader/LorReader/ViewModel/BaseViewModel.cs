@@ -9,6 +9,7 @@ namespace LorReader.ViewModel
         {
             Navigation = navigation;
         }
+        
 
         public INavigation Navigation { get; set; }
     }

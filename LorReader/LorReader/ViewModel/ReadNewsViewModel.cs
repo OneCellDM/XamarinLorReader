@@ -24,22 +24,36 @@ namespace LorReader.ViewModel
         }
         private async void Load(string url)
         {
+            int Errcount = 0;
+            Exception _ex = null;
             try
             {
                 News = await LorParser.LOR.GetNews(url);
-            }
-            catch(Exception ex)
-            {
 
             }
-
-            ReadCommentariesView = new CommentariesView()
+            catch(Exception ex) {  _ex = ex; Errcount++; }
+            try
             {
-                BindingContext = new ReadCommentariesViewModel(Navigation, News.commentPage)
+                ReadCommentariesView = new CommentariesView()
                 {
-                    IsScrollable=false
-                }
-            };
+                    BindingContext = new CommentariesViewModel(Navigation, News.commentPage)
+                    {
+                        IsScrollable = false,
+                        IsMain = false,
+                    }
+                };
+            }
+            catch (Exception ex) 
+            {
+                if(_ex!=null) _ex = ex;
+                Errcount++;
+               
+            }
+            if (Errcount == 2)
+            {
+               await App.Current.MainPage.DisplayActionSheet("Error", _ex?.Message??"Неизвестная ошибка", "cancel");
+               await Navigation.PopAsync();
+            }
         }
     }
 }

@@ -35,45 +35,37 @@ namespace LorReader.ViewModel
             
             OpenCommentaries = ReactiveCommand.Create((NewsPreview preview) =>
             {
-                try
-                {
+                
                     navigation.PushAsync(new ReadCommentariesPage()
                     {
-                        Title = "Комментарии" + preview.Title,
+                        Title = "Комментарии:" + preview.Title,
 
                         Content = new CommentariesView()
                         {
-                            BindingContext = new ReadCommentariesViewModel(navigation, preview.NewsUri)
+                            BindingContext = new CommentariesViewModel(navigation, preview.NewsUri)
                             {
-                                IsScrollable = true
+                                IsScrollable = true,
+                                IsMain = true
+
                             }
                         }
 
-                    }, true);
-                }
-                catch(Exception ex)
-                {
-
-                }
+                    }, true); ;
+                
+               
                 
                 
             });
 
             OpenNewsCommand = ReactiveCommand.Create((NewsPreview preview) =>
             {
-                try
-                {
-                    navigation.PushAsync(new ReadNewPage
+                   navigation.PushAsync(new ReadNewPage
                     {
                         Title = "Чтение:" + preview.Title,
                         BindingContext = new ReadNewsViewModel(navigation, preview.NewsUri)
 
                     });
-                }
-                catch(Exception ex)
-                {
-
-                }
+               
             });
 
             Load();

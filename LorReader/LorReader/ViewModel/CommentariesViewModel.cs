@@ -12,29 +12,12 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Diagnostics;
 using System;
+using LorReader.Models;
 
 namespace LorReader.ViewModel
 {
-    public class ReadCommentariesViewModel : ListViewModelBase<Comment>
+    public class CommentariesViewModel : ListViewModelBase<Comment>
     {
-        public class PageModel:ReactiveObject
-        {
-            public bool IsSelected { get; set; }
-            public int Number { get; set; }
-            public PageModel()
-            {
-
-            }
-
-            public PageModel(int number)
-            {
-                this.Number = number;
-            }
-            public PageModel(int number, bool isSelected = false) : this(number)
-            {
-                this.IsSelected = isSelected;
-            }
-        }
 
         private CommentPage _commentpage;
         public CommentPage CommentPage { get=>_commentpage; set=>this.RaiseAndSetIfChanged(ref _commentpage,value); }
@@ -48,6 +31,7 @@ namespace LorReader.ViewModel
         public PageModel SelectedPage { get; set; }
         [Reactive]
         public bool IsScrollable { get; set; } = false;
+        public bool IsMain { get; set; }
         public ScrollBarVisibility ScrollBarVisibility { get=>IsScrollable?ScrollBarVisibility.Always:ScrollBarVisibility.Never;  }
      
         
@@ -81,7 +65,7 @@ namespace LorReader.ViewModel
                 });
 
         }
-        public ReadCommentariesViewModel(INavigation navigation, string Uri):base(navigation)
+        public CommentariesViewModel(INavigation navigation, string Uri):base(navigation)
         {
 
             Subscribe();
@@ -89,11 +73,12 @@ namespace LorReader.ViewModel
             Load();
             
         }
-        public ReadCommentariesViewModel(INavigation navigation, CommentPage commentPage):base(navigation)
+        public CommentariesViewModel(INavigation navigation, CommentPage commentPage):base(navigation)
         {
             Subscribe();
             this.CommentPage = commentPage;
             this.Uri = this.CommentPage.NewsUrl;
+            Load();
             
         }
 
@@ -105,7 +90,13 @@ namespace LorReader.ViewModel
             }
             catch(Exception ex)
             {
+                if (IsMain)
+                {
+                    await App.Current.MainPage.DisplayActionSheet("Error", ex.Message, "cancel");
 
+                    await Navigation.PopAsync();
+                }
+                else throw ex;
             }
         }
     }
