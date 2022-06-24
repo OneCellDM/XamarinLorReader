@@ -101,9 +101,13 @@ namespace LorReader.ViewModel
                         EndData = true;
                     }
                 }
+                catch(Exception ex)
+                {
+                 await  App.Current.MainPage.DisplayAlert("Error", ex.Message,"Cancel");
+                }
                 finally
                 {
-                    Debug.WriteLine(Data.Count);
+                   
                     _loading = false;
                 }
             });
