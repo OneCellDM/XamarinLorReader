@@ -10,5 +10,6 @@ namespace LorParser.Models
         public List<Tag> Tags { get; set; }
         public string Time { get; set; }
         public string NewsUri { get; set; }
+        public string ImageUri { get; set; }
     }
 }

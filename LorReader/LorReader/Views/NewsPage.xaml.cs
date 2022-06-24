@@ -10,7 +10,12 @@ namespace LorReader.Views
         public NewsPage()
         {
             InitializeComponent();
-            BindingContext = new NewsViewModel(Navigation);
+
+            var context= new NewsViewModel(Navigation);
+            BindingContext = context;
+            NewsCollectionView.Scrolled += context.CollectionView_Scrolled;
         }
+
+        
     }
 }

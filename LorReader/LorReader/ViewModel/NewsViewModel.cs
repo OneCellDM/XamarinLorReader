@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using LorParser;
 using LorParser.Models;
 using LorReader.Views;
 using ReactiveUI;
 using Xamarin.Forms;
-
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace LorReader.ViewModel
 {
@@ -13,31 +15,65 @@ namespace LorReader.ViewModel
     {
         public IReactiveCommand OpenNewsCommand { get; set; }
         public IReactiveCommand OpenCommentaries { get; set; }
-
+        public IReactiveCommand ScrollCommand { get; set; }
+        bool _loading { get; set; }
+        bool EndData { get; set; }
+        public void CollectionView_Scrolled(object sender, ItemsViewScrolledEventArgs e)
+        {
+          
+                if (EndData is false && 
+                    _loading is false && 
+                    Data.Count > 0 && 
+                    e.LastVisibleItemIndex == Data.Count - 1)
+                {
+                     Load();
+                }
+            
+        }
         public NewsViewModel(INavigation navigation) : base(navigation)
         {
+            
             OpenCommentaries = ReactiveCommand.Create((NewsPreview preview) =>
             {
                 try
                 {
-                    navigation.PushAsync(new ReadCommentariesPage
+                    navigation.PushAsync(new ReadCommentariesPage()
                     {
-                        Title = "Комментарии к записи:" + preview.Title,
-                        BindingContext = new ReadCommentariesViewModel(navigation, preview.NewsUri)
+                        Title = "Комментарии" + preview.Title,
+
+                        Content = new CommentariesView()
+                        {
+                            BindingContext = new ReadCommentariesViewModel(navigation, preview.NewsUri)
+                            {
+                                IsScrollable = true
+                            }
+                        }
+
                     }, true);
                 }
                 catch(Exception ex)
                 {
-                 
+
                 }
+                
+                
             });
 
             OpenNewsCommand = ReactiveCommand.Create((NewsPreview preview) =>
             {
-                navigation.PushAsync(new ReadNewPage
+                try
                 {
-                    BindingContext = new ReadNewsViewModel(navigation, preview.NewsUri)
-                });
+                    navigation.PushAsync(new ReadNewPage
+                    {
+                        Title = "Чтение:" + preview.Title,
+                        BindingContext = new ReadNewsViewModel(navigation, preview.NewsUri)
+
+                    });
+                }
+                catch(Exception ex)
+                {
+
+                }
             });
 
             Load();
@@ -47,11 +83,37 @@ namespace LorReader.ViewModel
 
         public override void Load()
         {
+             if(_loading)
+                return;
+            _loading = true;
             Task.Run(async () =>
             {
-                var res = await LOR.GetNewsList();
-                foreach (var item in res.Items)
-                    Application.Current.Dispatcher.BeginInvokeOnMainThread(() => Data.Add(item));
+                try
+                {
+                    var res = await LOR.GetNewsList(Data.Count);
+                    bool IsEnd = false;
+                    foreach (var item in res.Items)
+                    {
+                        if (Data.Select(x => x.NewsUri).Contains(item.NewsUri))
+                        {
+                            IsEnd = true; 
+                        }
+                        else
+                        {
+                            Application.Current.Dispatcher.BeginInvokeOnMainThread(() => Data.Add(item));
+                            IsEnd = false;
+                        }
+                    }
+                    if (IsEnd)
+                    {
+                        EndData = true;
+                    }
+                }
+                finally
+                {
+                    Debug.WriteLine(Data.Count);
+                    _loading = false;
+                }
             });
         }
     }

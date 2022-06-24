@@ -14,28 +14,37 @@ namespace LorParser
         public static CommentPage CommentPageParse(HtmlNode htmlNode)
         {
             CommentPage commentPage = null;
-
-            var commentNodes = htmlNode?.SelectNodes("//article[@itemprop='comment']");
-
-            if (commentNodes != null)
+            var commentNode = htmlNode?.SelectSingleNode("//div[@class='comment']");
+            if (commentNode != null)
             {
                 commentPage = new CommentPage();
 
-                commentPage.PageNumber = int.Parse(htmlNode?.SelectSingleNode("//strong[@class='page-number']")?
+                commentPage.PageNumber = int.Parse(commentNode?
+                    .SelectSingleNode("//strong[@class='page-number']")?
                     .InnerText ?? "0");
 
-                commentPage.PageCount = htmlNode?.SelectSingleNode("//div[@class='nav']")?
-                    .ChildNodes
+                commentPage.PageCount = 
+                    commentNode?.SelectSingleNode("div[@class='nav']")?
+                    .SelectNodes("a|strong|span")
                     .Count - 2 ?? 0;
+                    
+                
+               
 
-                commentPage.Items = new List<Comment>();
+                var commentNodes = commentNode?.SelectNodes("article[@itemprop='comment']");
 
-                foreach (var commentNode in commentNodes)
+                if (commentNodes != null)
                 {
-                    var commentParsed = ParserUtils.CommentParse(commentNode);
+                    
+                    commentPage.Items = new List<Comment>();
 
-                    if (commentParsed != null)
-                        commentPage.Items.Add(commentParsed);
+                    foreach (var comment in commentNodes)
+                    {
+                        var commentParsed = ParserUtils.CommentParse(comment);
+
+                        if (commentParsed != null)
+                            commentPage.Items.Add(commentParsed);
+                    }
                 }
             }
 
