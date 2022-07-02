@@ -13,7 +13,13 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackLayout Margin="0" >
-                    <Label Margin="0,10,0,0" VerticalTextAlignment="Center" HorizontalOptions="Center"
+
+
+
+                    <Label Margin="0,10,0,10" LineBreakMode="WordWrap" HorizontalTextAlignment="Center" 
+                           FontAttributes="Bold"
+                           FontSize="Title"
+                           VerticalTextAlignment="Center" HorizontalOptions="Center"
                            TextColor="White" Text="{Binding News.Title}" TextType="Html" />
 
                     <hl:HtmlLabel Margin="10,0"

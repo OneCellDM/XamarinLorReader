@@ -8,7 +8,7 @@ namespace LorReader.Views
     {
         public ReadNewPage()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
     }
 }

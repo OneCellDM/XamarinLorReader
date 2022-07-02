@@ -75,9 +75,10 @@ namespace LorReader.ViewModel
 
         public override void Load()
         {
-             if(_loading)
-                return;
+             if(_loading) return;
+
             _loading = true;
+
             Task.Run(async () =>
             {
                 try
@@ -92,7 +93,7 @@ namespace LorReader.ViewModel
                         }
                         else
                         {
-                            Application.Current.Dispatcher.BeginInvokeOnMainThread(() => Data.Add(item));
+                            Data.Add(item);
                             IsEnd = false;
                         }
                     }
@@ -103,7 +104,7 @@ namespace LorReader.ViewModel
                 }
                 catch(Exception ex)
                 {
-                 await  App.Current.MainPage.DisplayAlert("Error", ex.Message,"Cancel");
+                    await  App.Current.MainPage.DisplayAlert("Error", ex.Message,"Cancel");
                 }
                 finally
                 {

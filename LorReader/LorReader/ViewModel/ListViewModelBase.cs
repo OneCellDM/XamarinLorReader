@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
+using OneCellDM.Collections;
+
 using ReactiveUI.Fody.Helpers;
 using Xamarin.Forms;
 
@@ -10,12 +12,12 @@ namespace LorReader.ViewModel
     {
         public ListViewModelBase(INavigation navigation) : base(navigation)
         {
-            Data = new ObservableCollection<T>();
+            Data = new ConcurrentObservableCollection<T>();
         }
 
         [Reactive] public T SelectedItem { get; set; }
 
-        [Reactive] public ObservableCollection<T> Data { get; set; }
+        [Reactive] public ConcurrentObservableCollection<T> Data { get; set; }
 
         public abstract void Load();
     }

@@ -3,7 +3,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:hl="clr-namespace:LabelHtml.Forms.Plugin.Abstractions;assembly=HtmlLabel.Forms.Plugin"
-             xmlns:behaviors="clr-namespace:Xamarin.Forms.BehaviorsPack;assembly=Xamarin.Forms.BehaviorsPack"
+             
             
              x:Class="LorReader.Views.NewsPage" Background="{StaticResource MainBg}" >
 
@@ -12,9 +12,6 @@
                      x:Name="NewsCollectionView"
                    
                      >
-        <CollectionView.Behaviors>
-            <behaviors:EventToCommandBehavior EventName="Scrolled" Command="{Binding ScrollCommand}"/>
-        </CollectionView.Behaviors>
        
         <CollectionView.ItemsLayout>
             <LinearItemsLayout Orientation="Vertical"
@@ -24,7 +21,10 @@
             <DataTemplate>
 
                 <StackLayout Margin="10" Background="{StaticResource ItemBG}">
-                    <Label Margin="0,10,0,0" VerticalTextAlignment="Center" HorizontalOptions="Center"
+                    <Label Margin="0,10,0,10" LineBreakMode="WordWrap" HorizontalTextAlignment="Center" 
+                           FontAttributes="Bold"
+                           FontSize="Title"
+                           VerticalTextAlignment="Center" HorizontalOptions="Center"
                            TextColor="White" Text="{Binding Title}" TextType="Html" />
 
                     <hl:HtmlLabel Margin="10,0"

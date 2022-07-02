@@ -11,7 +11,7 @@ namespace LorReader.Views
         {
             InitializeComponent();
 
-            var context= new NewsViewModel(Navigation);
+            var context = new NewsViewModel(Navigation);
 
             BindingContext = context;
 
