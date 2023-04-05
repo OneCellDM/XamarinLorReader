@@ -31,7 +31,7 @@ namespace LorParser
                 
                
 
-                var commentNodes = commentNode?.SelectNodes("article[@itemprop='comment']");
+                var commentNodes = commentNode?.SelectNodes("article");
 
                 if (commentNodes != null)
                 {
@@ -96,12 +96,14 @@ namespace LorParser
                     var replyA = titleNode?.SelectSingleNode("a");
 
                     var href = replyA?.Attributes["href"]?.Value;
-
+                    var name = titleNode.InnerText?.Replace("\n", "");
+                    if(name!=null)
+                        name = string.Join(" ", name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
                     comment.ReplyOn = new Reply
                     {
                         Time = replyTime ?? null,
                         Uri = LOR.LorUriBuilder(href) ?? null,
-                        Name = titleNode.InnerText ?? null
+                        Name = name ?? null
                     };
                 }
 
